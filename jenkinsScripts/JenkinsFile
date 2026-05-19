@@ -7,23 +7,27 @@ pipeline {
         JWT_SECRET = credentials('JWT_SECRET')
 
         REPO_URL = 'https://github.com/divyanshrajput016/AI-powered-resume-analyser.git'
+
         BACKEND_PORT = '3000'
         FRONTEND_PORT = '5000'
     }
 
     stages {
-        stage('Clone') {
+
+        stage('Clone Repository') {
             steps {
                 git branch: 'main', url: "${REPO_URL}"
             }
         }
 
-        stage('Create .env') {
+        stage('Create Environment Files') {
             steps {
                 sh '''
                 set -e
 
-                PUBLIC_IP=localhost
+                PUBLIC_IP=$(curl -s http://checkip.amazonaws.com)
+
+                echo "Creating env files..."
 
                 cat > .env <<EOF
 MONGO_URI=$MONGO_URI
@@ -33,18 +37,32 @@ NEXT_PUBLIC_API_URL=http://$PUBLIC_IP:$BACKEND_PORT
 FRONTEND_URL=http://$PUBLIC_IP:$FRONTEND_PORT
 EOF
 
-                echo ".env created"
-                grep -E "NEXT_PUBLIC_API_URL|FRONTEND_URL" .env
+                cp .env client/.env
+                cp .env server/.env
+
+                echo "ENV FILE CREATED SUCCESSFULLY"
+                echo "--------------------------------"
+                cat .env
+                echo "--------------------------------"
                 '''
             }
         }
 
-        stage('Deploy') {
+        stage('Docker Deploy') {
             steps {
                 sh '''
-                docker compose down
-                docker compose up -d --build --force-recreate
+                docker compose down || true
+
+                docker compose build --no-cache
+
+                docker compose up -d --force-recreate
                 '''
+            }
+        }
+
+        stage('Check Running Containers') {
+            steps {
+                sh 'docker ps'
             }
         }
     }
