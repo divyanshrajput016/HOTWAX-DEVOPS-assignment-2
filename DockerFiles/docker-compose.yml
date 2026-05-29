@@ -1,0 +1,14 @@
+services:
+  client:
+    env_file:
+      - ./client/.env
+    build: ./client
+    ports:
+      - "5000:3000"
+
+  server:
+    env_file:
+      - ./server/.env
+    build: ./server
+    ports:
+      - "3000:3000"
