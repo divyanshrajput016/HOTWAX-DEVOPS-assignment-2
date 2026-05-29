@@ -3,15 +3,8 @@ pipeline {
 
     environment {
         MONGO_URI = credentials('MONGO_URI')
-<<<<<<< HEAD
-        GEMINI_API_KEY = credentials('GOOGLE_API_KEY')
-        JWT_SECRET = credentials('JWT_SECRET')
-=======
         GEMINI_API_KEY = credentials('GEMINI_API_KEY')
         JWT_SECRET = credentials('JWT_SECRET')
-        MONGO_INITDB_ROOT_USERNAME = credentials('MONGO_INITDB_ROOT_USERNAME')
-        MONGO_INITDB_ROOT_PASSWORD = credentials('MONGO_INITDB_ROOT_PASSWORD')
->>>>>>> master
 
         REPO_URL = 'https://github.com/divyanshrajput016/AI-powered-resume-analyser.git'
 
@@ -37,17 +30,9 @@ pipeline {
                 echo "Creating env files..."
 
                 cat > .env <<EOF
-<<<<<<< HEAD
 MONGO_URI=$MONGO_URI
 GEMINI_API_KEY=$GEMINI_API_KEY
 JWT_SECRET=$JWT_SECRET
-=======
-MONGO_URI=mongodb://$MONGO_INITDB_ROOT_USERNAME:$MONGO_INITDB_ROOT_PASSWORD@mongodb:27017/resume_analyser?authSource=admin
-GEMINI_API_KEY=$GEMINI_API_KEY
-JWT_SECRET=$JWT_SECRET
-MONGO_INITDB_ROOT_USERNAME=$MONGO_INITDB_ROOT_USERNAME
-MONGO_INITDB_ROOT_PASSWORD=$MONGO_INITDB_ROOT_PASSWORD
->>>>>>> master
 NEXT_PUBLIC_API_URL=http://$PUBLIC_IP:$BACKEND_PORT
 FRONTEND_URL=http://$PUBLIC_IP:$FRONTEND_PORT
 EOF
@@ -56,12 +41,6 @@ EOF
                 cp .env server/.env
 
                 echo "ENV FILE CREATED SUCCESSFULLY"
-<<<<<<< HEAD
-                echo "--------------------------------"
-                cat .env
-                echo "--------------------------------"
-=======
->>>>>>> master
                 '''
             }
         }
