@@ -1,4 +1,4 @@
-apiVersion: apps/v1
+apiVersion: apps/v2
 kind: Deployment
 metadata:
   name: frontend-deployment
@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: krishuuu016/ai-client:v1
+          image: krishuuu016/ai-client:v2
           ports:
             - containerPort: 3000
           envFrom:
